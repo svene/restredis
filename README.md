@@ -9,7 +9,7 @@ checkout node, restify, redis combination
 - install node.js
 - install restify  (rest server for node.js): `npm install restify`
 
-- install [node-redis](https://github.com/mranney/node_redis) (rest server for node.js) `npm install redis`
+- install [node-redis](https://github.com/mranney/node_redis) (redis driver for node.js) `npm install redis`
 
 ###Development tools:
 - optional: install [nodemon](https://github.com/remy/nodemon) (automatic reloading of changed files ): `sudo npm install nodemon -g`
