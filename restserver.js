@@ -49,29 +49,6 @@ function textByKey(req, response, next) {
 		});
 }
 
-function saveIt(req, response, next) {
-	console.log("SSS in saveIt");
-//	console.log(req.body);
-	var key = req.params.key
-	if (!key) {
-		response.status(404);
-		response.send("error=required request parameter 'key' missing");
-		return;
-	}
-	var txt = req.params.txt
-	if (!txt) {
-		response.status(404);
-		response.send("error=required request parameter 'txt' missing");
-		return;
-	}
-	console.log("SSS trying to save");
-	client.set(key, txt, function(err, res) {
-		console.log("SSS saved " + key + "=" + txt);
-	});
-//	client.get(key, redis.print);
-	response.send('saved ' + key + "=" + txt);	
-}
-
 function foo(req, response, next) {
 	console.log("FFF2 in foo");
 	var hello = req.params.hello;
@@ -85,14 +62,24 @@ function foo(req, response, next) {
 	response.send({"hello": "world"});
 }
 
-function saveIt2(req, response, next) {
-	console.log("S2: in saveIt2");
+function saveIt(req, response, next) {
+	console.log("SSS: in saveIt2");
 	var input = req.body.input;
 	var key = input.key;
+	if (!key) {
+		response.status(404);
+		response.send("error=required request parameter 'key' missing");
+		return;
+	}
 	var text = input.text;
-	console.log("S2: key=", key, ", text=", text);
+	if (!text) {
+		response.status(404);
+		response.send("error=required request parameter 'text' missing");
+		return;
+	}
+	console.log("SSS: key=", key, ", text=", text);
 
-	console.log("S2: trying to save");
+	console.log("SSS: trying to save");
 	client.set(key, text, function(err, res) {
 		console.log("SSS saved " + key + "=" + text);
 	});
@@ -107,9 +94,8 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser({ mapParams: false }));
 server.get('/hello/:name', respond);
 server.head('/hello/:name', respond);
-server.get('/save/:key', saveIt);
 
-server.post('/text', saveIt2);
+server.post('/text', saveIt);
 
 server.del('/delete/:key', deleteIt);
 

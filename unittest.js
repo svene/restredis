@@ -57,22 +57,11 @@ function callGetSven2() {
 
 function callSaveSven() {
 	console.log("--- save");
-/*
-	client.get('/save/sven?txt=text1', function(err, req, res, data) {
-			console.log('%d -> %j', res.statusCode, res.headers);
-			console.log('%s', data);
-			assertEquals('saved sven=text1', data);
-		console.log('%s', data);
-		callGetSven2();
-	});
-*/
-
 	jsonClient.post('/text', {"input": {"key": "sven", "text": "text1"}}, function(err, req, res, obj) {
 		assert.ifError(err);
 		console.log('%d -> %j', res.statusCode, res.headers);
 		console.log('%j', obj);
 	});
-
 }
 
 callClean();
