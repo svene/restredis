@@ -50,22 +50,13 @@ function textByKey(req, response, next) {
 }
 
 function foo(req, response, next) {
-	console.log("FFF in foo");
-	console.log(req.params);
-	console.log("FFF " + req.params.hello);
-	console.log("FFF " + req.params.n1);
-	console.log("FFF " + req.params.nested.name);
-	response.contentType = 'json';
-	response.send({"hello": "world"});
-}
-function foo2(req, response, next) {
 	console.log("FFF2 in foo");
 	var hello = req.params.hello;
-	console.log("body: ", req.body);
+	console.log("FFF2: body: ", req.body);
 	var json = req.body;
-	console.log("json: ", json);
-	console.log("hello: ", json.hello);
-	console.log("hello.name1: ", json.hello.name1);
+	console.log("FFF2: json: ", json);
+	console.log("FFF2: hello: ", json.hello);
+	console.log("FFF2: hello.name1: ", json.hello.name1);
 
 	response.contentType = 'json';
 	response.send({"hello": "world"});
@@ -106,7 +97,6 @@ server.del('/delete/:key', deleteIt);
 server.get('/text/:key', textByKey);
 
 server.post('/foo', foo);
-server.post('/foo2', foo2);
 
 server.listen(8080, function() {
 	console.log('%s listening at %s', server.name, server.url);

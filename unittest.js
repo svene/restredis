@@ -16,14 +16,7 @@ function assertEquals(expected, actual) {
 }
 
 function postFoo() {
-	jsonClient.post('/foo', { "hello": "world", "n1": "v1", "nested": [{"name": "sven"}] }, function(err, req, res, obj) {
-		assert.ifError(err);
-		console.log('%d -> %j', res.statusCode, res.headers);
-		console.log('%j', obj);
-	});
-}
-function postFoo2() {
-	jsonClient.post('/foo2', {"hello": {"name1": "sven"}}, function(err, req, res, obj) {
+	jsonClient.post('/foo', {"hello": {"name1": "sven"}}, function(err, req, res, obj) {
 		assert.ifError(err);
 		console.log('%d -> %j', res.statusCode, res.headers);
 		console.log('%j', obj);
@@ -57,7 +50,7 @@ function callGetSven2() {
 		console.log('%s', data);
 
 		console.log('*** TEST DONE ***');
-			postFoo2();
+			//postFoo2();
 			//postFoo();
 	});
 }
@@ -74,4 +67,6 @@ function callSaveSven() {
 }
 
 callClean();
+
+postFoo();
 
