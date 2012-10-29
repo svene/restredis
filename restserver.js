@@ -29,7 +29,6 @@ function textByKey(req, response, next) {
 		return;
 	}
 
-//	if (key) {
 		client.get(key, function(err, res) {
 			console.log("GGG " + res);
 			if (res) {
@@ -48,11 +47,33 @@ function textByKey(req, response, next) {
 				response.send('error=' + key  + " not found in DB");
 			}
 		});
-//	}
+}
+
+function foo(req, response, next) {
+	console.log("FFF in foo");
+	console.log(req.params);
+	console.log("FFF " + req.params.hello);
+	console.log("FFF " + req.params.n1);
+	console.log("FFF " + req.params.nested.name);
+	response.contentType = 'json';
+	response.send({"hello": "world"});
+}
+function foo2(req, response, next) {
+	console.log("FFF2 in foo");
+	var hello = req.params.hello;
+	console.log("body: ", req.body);
+	var json = req.body;
+	console.log("json: ", json);
+	console.log("hello: ", json.hello);
+	console.log("hello.name1: ", json.hello.name1);
+
+	response.contentType = 'json';
+	response.send({"hello": "world"});
 }
 
 function saveIt(req, response, next) {
 	console.log("SSS in saveIt");
+//	console.log(req.body);
 	var key = req.params.key
 	if (!key) {
 		response.status(404);
@@ -75,12 +96,17 @@ function saveIt(req, response, next) {
 
 var server = restify.createServer();
 server.use(restify.queryParser());
+server.use(restify.bodyParser({ mapParams: false }));
 server.get('/hello/:name', respond);
 server.head('/hello/:name', respond);
 server.get('/save/:key', saveIt);
+//server.post('/save', saveIt);
 server.del('/delete/:key', deleteIt);
 
 server.get('/text/:key', textByKey);
+
+server.post('/foo', foo);
+server.post('/foo2', foo2);
 
 server.listen(8080, function() {
 	console.log('%s listening at %s', server.name, server.url);
