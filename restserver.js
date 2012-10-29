@@ -49,19 +49,6 @@ function textByKey(req, response, next) {
 		});
 }
 
-function foo(req, response, next) {
-	console.log("FFF2 in foo");
-	var hello = req.params.hello;
-	console.log("FFF2: body: ", req.body);
-	var json = req.body;
-	console.log("FFF2: json: ", json);
-	console.log("FFF2: hello: ", json.hello);
-	console.log("FFF2: hello.name1: ", json.hello.name1);
-
-	response.contentType = 'json';
-	response.send({"hello": "world"});
-}
-
 function saveIt(req, response, next) {
 	console.log("SSS in saveIt");
 //	console.log(req.body);
@@ -85,13 +72,45 @@ function saveIt(req, response, next) {
 	response.send('saved ' + key + "=" + txt);	
 }
 
+function foo(req, response, next) {
+	console.log("FFF2 in foo");
+	var hello = req.params.hello;
+	console.log("FFF2: body: ", req.body);
+	var json = req.body;
+	console.log("FFF2: json: ", json);
+	console.log("FFF2: hello: ", json.hello);
+	console.log("FFF2: hello.name1: ", json.hello.name1);
+
+	response.contentType = 'json';
+	response.send({"hello": "world"});
+}
+
+function saveIt2(req, response, next) {
+	console.log("S2: in saveIt2");
+	var input = req.body.input;
+	var key = input.key;
+	var text = input.text;
+	console.log("S2: key=", key, ", text=", text);
+
+	console.log("S2: trying to save");
+	client.set(key, text, function(err, res) {
+		console.log("SSS saved " + key + "=" + text);
+	});
+	response.send('saved ' + key + "=" + text);	
+
+//	response.contentType = 'json';
+//	response.send({"hello": "world"});
+}
+
 var server = restify.createServer();
 server.use(restify.queryParser());
 server.use(restify.bodyParser({ mapParams: false }));
 server.get('/hello/:name', respond);
 server.head('/hello/:name', respond);
 server.get('/save/:key', saveIt);
-//server.post('/save', saveIt);
+
+server.post('/text', saveIt2);
+
 server.del('/delete/:key', deleteIt);
 
 server.get('/text/:key', textByKey);
